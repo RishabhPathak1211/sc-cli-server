@@ -68,6 +68,16 @@ class PackageController {
         return res.status(201).json({ status: 'success' });
     }
 
+    @Route('get', '/all')
+    async getAllPackages(req: Request, res: Response, next: NextFunction) {
+        try {
+            const globalPackageList = await Package.find({}).populate('user', 'username email fullName -_id').select('-dependencies');
+            return res.status(200).json({ packages: globalPackageList });
+        } catch (error) {
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
     @Route('get', '/:packageName')
     @Validate(packageBodyValidation, 'params')
     @Authenticate('consumerKey')
