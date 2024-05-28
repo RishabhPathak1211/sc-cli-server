@@ -12,6 +12,7 @@ import PackageController from './controller/package';
 import mongoose from 'mongoose';
 import { declareHandler } from './middleware/declareHandler';
 import UserController from './controller/user';
+import TemplateController from './controller/template';
 
 export const application = express();
 export let httpServer: ReturnType<typeof http.createServer>;
@@ -48,7 +49,12 @@ export const Main = async () => {
     logging.info('------------------------------');
     logging.info('Define Controller Routing');
     logging.info('------------------------------');
-    defineRoutes([MainController, PackageController, UserController], application);
+    defineRoutes([
+        MainController,
+        PackageController,
+        UserController,
+        TemplateController
+    ], application);
 
     logging.info('------------------------------');
     logging.info('Error Routing');

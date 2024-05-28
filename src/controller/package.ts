@@ -68,6 +68,19 @@ class PackageController {
         return res.status(201).json({ status: 'success' });
     }
 
+    @Route('get')
+    @Authenticate('token')
+    async getUserPackages(req: Request, res: Response, next: NextFunction) {
+        const { id } = req.user!;
+
+        try {
+            const userPackages = await Package.find({ user: id });
+            return res.status(200).json({ packages: userPackages });
+        } catch (error) {
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
     @Route('get', '/all')
     async getAllPackages(req: Request, res: Response, next: NextFunction) {
         try {

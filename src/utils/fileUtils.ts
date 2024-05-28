@@ -1,4 +1,4 @@
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { S3_CREDENTIALS } from '../config/config';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
@@ -18,7 +18,31 @@ export const upload = multer({
         key: function (req, file, cb) {
             cb(null, Date.now().toString() + '_' + file.originalname);
         }
-    })
+    }),
+    fileFilter: function (req, file, cb) {
+        if (req.user) {
+            cb(null, true);
+        } else {
+            cb(null, false);
+        }
+    }
+});
+
+export const adminUpload = multer({
+    storage: multerS3({
+        s3,
+        bucket: S3_CREDENTIALS.S3_BUCKET_NAME,
+        key: function (req, file, cb) {
+            cb(null, Date.now().toString() + '_' + file.originalname);
+        }
+    }),
+    fileFilter: function (req, file, cb) {
+        if (req.user && req.user.username === 'admin') {
+            cb(null, true);
+        } else {
+            cb(null, false);
+        }
+    }
 });
 
 export const getFileBuffer = async (fileName: string): Promise<Buffer | undefined> => {
@@ -33,4 +57,13 @@ export const getFileBuffer = async (fileName: string): Promise<Buffer | undefine
         const buffer = Buffer.from(await Body.transformToByteArray());
         return buffer;
     }
+};
+
+export const deleteFile = async (fileName: string) => {
+    const deleteObjectCommand = new DeleteObjectCommand({
+        Bucket: S3_CREDENTIALS.S3_BUCKET_NAME,
+        Key: fileName
+    });
+
+    await s3.send(deleteObjectCommand);
 };

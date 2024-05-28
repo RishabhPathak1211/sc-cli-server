@@ -3,7 +3,6 @@ import { Controller } from '../decorator/controller';
 import { Route } from '../decorator/route';
 import { Validate } from '../decorator/validate';
 import Joi from 'joi';
-import { Authenticate } from '../decorator/authenticate';
 
 @Controller('/main')
 class MainController {
