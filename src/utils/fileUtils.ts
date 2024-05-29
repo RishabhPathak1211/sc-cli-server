@@ -19,13 +19,15 @@ export const upload = multer({
             cb(null, Date.now().toString() + '_' + file.originalname);
         }
     }),
-    fileFilter: function (req, file, cb) {
-        if (req.user) {
-            cb(null, true);
-        } else {
-            cb(null, false);
-        }
-    }
+    // fileFilter: function (req, file, cb) {
+    //     if (req.user) {
+    //         console.log("HERE");
+    //         cb(null, true);
+    //     } else {
+    //         console.log("NO HERE");
+    //         cb(null, false);
+    //     }
+    // }
 });
 
 export const adminUpload = multer({
@@ -36,13 +38,13 @@ export const adminUpload = multer({
             cb(null, Date.now().toString() + '_' + file.originalname);
         }
     }),
-    fileFilter: function (req, file, cb) {
-        if (req.user && req.user.username === 'admin') {
-            cb(null, true);
-        } else {
-            cb(null, false);
-        }
-    }
+    // fileFilter: function (req, file, cb) {
+    //     if (req.user && req.user.username === 'admin') {
+    //         cb(null, true);
+    //     } else {
+    //         cb(null, false);
+    //     }
+    // }
 });
 
 export const getFileBuffer = async (fileName: string): Promise<Buffer | undefined> => {
