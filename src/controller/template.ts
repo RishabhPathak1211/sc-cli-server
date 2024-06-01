@@ -7,11 +7,13 @@ import { Authenticate } from '../decorator/authenticate';
 interface ITemplateFileMapping {
     project: string;
     package: string;
+    sdk: string;
 }
 
 const templateToFileMapping: ITemplateFileMapping  = {
     project: 'project_template.zip',
-    package: 'package_template.zip'
+    package: 'package_template.zip',
+    sdk: 'salescode_sdk.zip'
 }
 
 @Controller('/template')
