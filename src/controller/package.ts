@@ -74,7 +74,7 @@ class PackageController {
         const { id } = req.user!;
 
         try {
-            const userPackages = await Package.find({ user: id }).select('-dependencies');
+            const userPackages = await Package.find({ user: id }).select('-dependencies -user -fileName');
             return res.status(200).json({ packages: userPackages });
         } catch (error) {
             return res.status(500).json({ error: 'Internal Server Error' });
@@ -84,7 +84,7 @@ class PackageController {
     @Route('get', '/all')
     async getAllPackages(req: Request, res: Response, next: NextFunction) {
         try {
-            const globalPackageList = await Package.find({}).populate('user', 'username email -_id').select('-dependencies');
+            const globalPackageList = await Package.find({}).populate('user', 'username email -_id').select('-dependencies -fileName');
             return res.status(200).json({ packages: globalPackageList });
         } catch (error) {
             return res.status(500).json({ error: 'Internal Server Error' });
