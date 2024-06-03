@@ -20,6 +20,7 @@ export function Validate(schema: Joi.ObjectSchema, validationType: ValidationTyp
                     }
                     case 'query': {
                         await schema.validateAsync(req.query);
+                        break;
                     }
                     default: {
                         throw new Error('Invalid validation type')
