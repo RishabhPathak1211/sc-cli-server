@@ -28,6 +28,9 @@ export function Authenticate(authType: AuthType = 'token') {
                                     }
                                     return res.status(500).json({ error: 'Internal Server Error' });
                                 }
+                            } else {
+                                req.user = undefined;
+                                return res.status(403).json({ error: 'Unauthorized' });
                             }
                         } else {
                             req.user = undefined;
@@ -47,6 +50,7 @@ export function Authenticate(authType: AuthType = 'token') {
                                 email: userDoc.email
                             }
                         } else {
+                            req.user = undefined;
                             return res.status(403).json({ error: 'Incorrect Consumer Key' });
                         }
                     } else {
