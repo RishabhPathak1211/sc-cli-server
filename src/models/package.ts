@@ -1,11 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
 import { IUser } from './user';
 
+export type PackageStatus = 'PUBLISHED' | 'PENDING' | 'REJECTED';
+
 export interface IPackage extends Document {
     packageName: string;
     dependencies: mongoose.Types.ObjectId[] | IPackage[];
     user: mongoose.Types.ObjectId | IUser,
-    fileName: string
+    fileName: string,
+    status: PackageStatus
 }
 
 const validateSnakeCase = (value: string): boolean => {
@@ -36,6 +39,11 @@ export const packageSchema = new Schema<IPackage>(
         fileName: {
             type: String,
             required: true
+        },
+        status: {
+            type: String,
+            enum: ['PUBLISHED', 'PENDING', 'REJECTED'],
+            default: 'PENDING'
         }
     },
     {
