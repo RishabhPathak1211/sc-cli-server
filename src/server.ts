@@ -1,6 +1,7 @@
 import http from 'http';
 import express from 'express';
 import 'reflect-metadata';
+import cors from 'cors';
 import { loggingHandler } from './middleware/loggingHandler';
 import { corsHandler } from './middleware/corsHandler';
 import { routeNotFound } from './middleware/routeNotFound';
@@ -44,7 +45,8 @@ export const Main = async () => {
     logging.info('------------------------------');
     application.use(declareHandler);
     application.use(loggingHandler);
-    application.use(corsHandler);
+    // application.use(corsHandler);
+    application.use(cors());
 
     logging.info('------------------------------');
     logging.info('Define Controller Routing');
